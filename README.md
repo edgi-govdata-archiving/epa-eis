@@ -63,8 +63,20 @@ This directory has a Python script that will parse through the CSV from stage 1 
 
 `createWarc.py` invokes `wget` command as a subprocess in the script to package the response from the supplied URL into WARC. The PDF links present in the HTML page cannot be preserved in the HTML, therefore they are downloaded separately.
 
+## Usage
 
-# Dependencies
+    git@github.com:guerrilla-archiving/epa-eis.git
+	cd epa-eis/1-get-eis-ids/
+	ADD DETAILS ABOUT JSESSION ID
+    ADD MORE DETAILS
+    cd ../3-make-warcs/
+	python createWarc.py
+
+## TODO
+
+* Add details about annoying jsessionid in stage 1.
+
+## Dependencies
 
 For stage 1:
 
@@ -77,9 +89,3 @@ For stage 3:
 
 1. `wget` (available for all operating systems, see https://www.gnu.org/software/wget/)
 2. Python 2.7
-
-## Usage
-
-Clone this repo then just simply run the python script `python createWarc.py`
-
-Supplied is the csv, if you would like to customize this python or expand and modify the script to a take in generic datasets please modify the csv, base urls accordingly.
