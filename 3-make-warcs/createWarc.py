@@ -6,7 +6,7 @@ import time
 #Input = subprocess.call(["wget", "--warc-file", "/Users/sonal/SideProjects/WarcCreator/my-warc-file.warc", "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId=219321"])
 
 #path to the CSV with the unique IDs to each EIS
-csv_Path = 'eis-listing.csv'
+csv_Path = '../1-get-eis-ids/eis-listing.csv'
 
 #base URL for the EIS page
 base_HTML_EPA_url = 'https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId='
