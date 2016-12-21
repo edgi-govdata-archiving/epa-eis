@@ -6,10 +6,11 @@ One of the [goals set out for the technical group](https://github.com/guerrilla-
 >
 > Environmental Impact Statements or EIS are a crucial tool in environmental regulation.  [[https://cdxnodengn.epa.gov/cdx-enepa-public/action/eis/search][They are accessible here]], and leaving all search criteria blank returns a full listing. Documents are accessible at landing pages two clicks down, which [[https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId=223815][look like this]].  These landing pages contain metadata which we should scrape.
 >
-> ** Deliverables
+> ## Deliverables
+>
 > - *Code:* write a scraper/crawler that can extract metadata form text & PDF files & save them to a simple DB for future researchers.
 >
-> ** Priority
+> ## Priority
 >
 > EIS are a high-value document source, but it looks like they will also be retrieved by the official IA crawl. So this is *not* time-sensitive.
 
