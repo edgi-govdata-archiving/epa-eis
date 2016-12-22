@@ -3,7 +3,7 @@ var cheerio = require( 'cheerio' );
 var fs = require( 'fs' );
 var Converter = require( "csvtojson" ).Converter;
 var converter = new Converter( {} );
-var CSV_FILENAME = "../1-EIS-ID/eis-listing.csv"
+var CSV_FILENAME = "../1-get-eis-ids/eis-listing.csv"
 
 var pageData = {
   metaData: {
@@ -27,12 +27,12 @@ var pageData = {
 };
 
 converter.fromFile( CSV_FILENAME, function( err, result ) {
-  var eidIdArray = result.map( function( obj ) {
-    return obj.eid_id;
+    var eisIdArray = result.map( function( obj ) {
+	return obj.eis_id;
   } );
 
-  eidIdArray.forEach( function( id ) {
-    request( 'https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId=' + id, function( err, res, html ) {
+    eisIdArray.forEach( function( id ) {
+	request( 'https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId=' + id, function( err, res, html ) {
       if ( !err && res.statusCode == 200 ) {
         console.log( "Scraping page", id, "..." );
         var $ = cheerio.load( html );
