@@ -147,13 +147,13 @@ This is a Python script that will parse through the CSV from stage 1 using `wget
 ## Installation and preparation
 
 ```sh
-git clone git@github.com:guerrilla-archiving/epa-eis.git
-cd epa-eis
 gem install nokogiri
-cd 2-scrape-metadata
+git clone git@github.com:guerrilla-archiving/epa-eis.git
+cd epa-eis/
+cd 2-scrape-metadata/
 npm install
 npm installcsvtojson
-cd ..
+cd ../
 ```
 
 (Depending on your system you may need to run some of these commands with the prefix `sudo`.)
