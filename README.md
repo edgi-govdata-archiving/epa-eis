@@ -19,9 +19,7 @@ One of the [goals set out for the technical group](https://github.com/guerrilla-
 Our process is built in three steps:
 
 1. Scraping all EIS links and outputing a CSV with unique IDs
-
 2. Scrape each page for metadata (EIS Number, PDF links, etc)
-
 3. Process to convert all links and PDFs to WARC format
 
 ## 1: Get ID numbers
@@ -165,7 +163,7 @@ cd ..
 ```sh
 cd epa-eis/1-get-eis-ids/
 # Make sure you pasted a fresh jsessionid into the script
-ruby scrape-eis.rb
+ruby scrape-eis.rb > eis-listing.csv
 cd ../2-scrape-metadata/
 npm start
 cd ../3-make-warcs/
