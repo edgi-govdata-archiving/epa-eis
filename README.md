@@ -67,41 +67,110 @@ Knowing the eis_id and those URL patterns means it's easy to download all the do
 
 Tidy things up by doing this:
 
-    head -1 eis-listing.csv > tmp.csv
-    grep -v eis_id eis-listing.csv | sort -rn | uniq >> tmp.csv
-        mv tmp.csv eis-listing.csv
+```sh
+head -1 eis-listing.csv > tmp.csv
+grep -v eis_id eis-listing.csv | sort -rn | uniq >> tmp.csv
+mv tmp.csv eis-listing.csv
+```
 
 ## 2: Get the metadata
 
-[To be done.]
+This takes in a CSV (`../1-get-eis-ids/eis-listing.csv`) with a unique ID of each EIS page, and outputs JSON with the metadata and PDF links.
+
+For example, if one of the links in the CSV document includes [this link](https://cdxnodengn.epa.gov/cdx-enepa-II/public/act
+ion/eis/details?eisId=222951) with ID `222951`, then it will output this metadata JSON called `output/page-metadata-222951.json`:
+
+```js
+{
+  "metaData": {
+    "EIS Title": " Nexus Gas Transmission Project and Texas Eastern Appalachian Lease Project",
+    "EIS Number": " 20160289",
+    "Document Type": " Final",
+    "Federal Register Date": " 2016-12-09 00:00:00.0",
+    "EIS Comment Due/ Review Period Date": " 2017-01-09 00:00:00.0",
+    "Amended Notice Date": "",
+    "Amended Notice": "",
+    "Supplemental Information": "",
+    "Website": "",
+    "EPA Comment Letter Date": "",
+    "State or Territory": " MI - OH",
+    "Lead Agency": " Federal Energy Regulatory Commission",
+    "Contact Name": " Joanne Wachholder",
+    "Contact Phone": " 202-502-8056",
+    "Rating (if Draft EIS)": ""
+  },
+  "pdfLinks": [ {
+    "pdf-link": "https://cdxnodengn.epa.gov#links",
+    "pdf-filename": "EPA's PDF page"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov#links",
+    "pdf-filename": "NEPAdatabasesupport"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223102",
+    "pdf-filename": "1 Final Environmental Impact Statement.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223104",
+    "pdf-filename": "2 Appendices A-D.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223106",
+    "pdf-filename": "3 Appendices E1-E4.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223108",
+    "pdf-filename": "4 Appendix E5 Part 1.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223110",
+    "pdf-filename": "5 Appendix E5 Part 2.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223112",
+    "pdf-filename": "6 Appendices F-Q.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223114",
+    "pdf-filename": "7 Appendix R Part 1.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223116",
+    "pdf-filename": "8 Appendix R Part 2.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223118",
+    "pdf-filename": "9 Appendix R Part 3.pdf"
+  }, {
+    "pdf-link": "https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details;jsessionid=DACBBEC17397AF888EDC4C8470BB17A1?downloadAttachment=&attachmentId=223120",
+    "pdf-filename": "10 Appendix R Part 4.pdf"
+  } ]
+}
+
+```
 
 ## 3: Archive as WARC
 
-This directory has a Python script that will parse through the CSV from stage 1 use `wget` to get the EIS files and package them in WARC format and download any documents associated with the EIS into a zip format.
+This is a Python script that will parse through the CSV from stage 1 using `wget` to get the EIS files and package them in WARC format and download any documents associated with the EIS into a zip format.
 
 `createWarc.py` invokes `wget` command as a subprocess in the script to package the response from the supplied URL into WARC. The PDF links present in the HTML page cannot be preserved in the HTML, therefore they are downloaded separately.
 
 ## Installation and preparation
 
-    $ git clone git@github.com:guerrilla-archiving/epa-eis.git
-    $ cd epa-eis
-    $ gem install nokogiri
-	$ cd 2-scrape-metadata
-	$ npm install
-    $ npm installcsvtojson
-    $ cd ..
+```sh
+git clone git@github.com:guerrilla-archiving/epa-eis.git
+cd epa-eis
+gem install nokogiri
+cd 2-scrape-metadata
+npm install
+npm installcsvtojson
+cd ..
+```
 
 (Depending on your system you may need to run some of these commands with the prefix `sudo`.)
 
 ## Usage
 
-	$ cd epa-eis/1-get-eis-ids/
-	$ ADD DETAILS ABOUT JSESSION ID
-    $ ruby scrape-eis.rb
-    $ cd ../2-scrape-metadata/
-    $ npm start
-    $ cd ../3-make-warcs/
-	$ python createWarc.py
+```sh
+cd epa-eis/1-get-eis-ids/
+# Make sure you pasted a fresh jsessionid into the script
+ruby scrape-eis.rb
+cd ../2-scrape-metadata/
+npm start
+cd ../3-make-warcs/
+python createWarc.py
+```
 
 ## Dependencies
 
