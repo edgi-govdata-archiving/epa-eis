@@ -149,8 +149,7 @@ This is a Python script that will parse through the CSV from stage 1 using `wget
 ```sh
 gem install nokogiri
 git clone git@github.com:guerrilla-archiving/epa-eis.git
-cd epa-eis/
-cd 2-scrape-metadata/
+cd epa-eis/2-scrape-metadata/
 npm install
 npm installcsvtojson
 cd ../
@@ -161,7 +160,7 @@ cd ../
 ## Usage
 
 ```sh
-cd epa-eis/1-get-eis-ids/
+cd 1-get-eis-ids/
 # Make sure you pasted a fresh jsessionid into the script
 ruby scrape-eis.rb > eis-listing.csv
 cd ../2-scrape-metadata/
