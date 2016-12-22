@@ -81,29 +81,43 @@ This directory has a Python script that will parse through the CSV from stage 1 
 
 `createWarc.py` invokes `wget` command as a subprocess in the script to package the response from the supplied URL into WARC. The PDF links present in the HTML page cannot be preserved in the HTML, therefore they are downloaded separately.
 
+## Installation and preparation
+
+    $ git clone git@github.com:guerrilla-archiving/epa-eis.git
+    $ cd epa-eis
+    $ gem install nokogiri
+	$ cd 2-scrape-metadata
+	$ npm install
+    $ npm installcsvtojson
+    $ cd ..
+
+(Depending on your system you may need to run some of these commands with the prefix `sudo`.)
+
 ## Usage
 
-    git@github.com:guerrilla-archiving/epa-eis.git
-	cd epa-eis/1-get-eis-ids/
-	ADD DETAILS ABOUT JSESSION ID
-    ADD MORE DETAILS
-    cd ../3-make-warcs/
-	python createWarc.py
-
-## TODO
-
-* Add details about annoying jsessionid in stage 1.
+	$ cd epa-eis/1-get-eis-ids/
+	$ ADD DETAILS ABOUT JSESSION ID
+    $ ruby scrape-eis.rb
+    $ cd ../2-scrape-metadata/
+    $ npm start
+    $ cd ../3-make-warcs/
+	$ python createWarc.py
 
 ## Dependencies
+
+Each stage uses a different language, but evverything is available for all operating platforms.
 
 For stage 1:
 
 * Ruby
-* [Nokogiri](http://www.nokogiri.org/): `gem install nokogiri`
+* [Nokogiri](http://www.nokogiri.org/)
 
 For stage 2:
 
+* [Node.js](https://github.com/nodejs/node)
+* [npm](https://www.npmjs.com/)
+
 For stage 3:
 
-1. `wget` (available for all operating systems, see https://www.gnu.org/software/wget/)
-2. Python 2.7
+* [wget](https://www.gnu.org/software/wget/)
+* [Python](https://www.python.org/) 2.7
