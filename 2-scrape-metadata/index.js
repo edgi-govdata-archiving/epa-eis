@@ -1,9 +1,10 @@
-var request = require( 'request' );
 var cheerio = require( 'cheerio' );
 var fs = require( 'fs' );
 var Converter = require( "csvtojson" ).Converter;
 var converter = new Converter( {} );
-var CSV_FILENAME = "../1-get-eis-ids/eis-listing.csv"
+var CSV_FILENAME = "../1-get-eis-ids/eis-listing.csv";
+var Promise = require( 'bluebird' );
+var request = Promise.promisifyAll( require( 'request' ) );
 
 var pageData = {
   metaData: {
@@ -27,15 +28,15 @@ var pageData = {
 };
 
 converter.fromFile( CSV_FILENAME, function( err, result ) {
-    var eisIdArray = result.map( function( obj ) {
-	return obj.eis_id;
+  var eisIdArray = result.map( function( obj ) {
+    return obj.eis_id;
   } );
-
-    eisIdArray.forEach( function( id ) {
-	request( 'https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId=' + id, function( err, res, html ) {
+  Promise.map( eisIdArray, function( id ) {
+    var url = 'https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId=' + id;
+    return request.getAsync( url ).then( function( res ) {
       if ( !err && res.statusCode == 200 ) {
         console.log( "Scraping page", id, "..." );
-        var $ = cheerio.load( html );
+        var $ = cheerio.load( res.body );
         $( '.form-item' ).each( function( i, element ) {
           var formItem = $( element );
           var text = formItem.text().trim().replace( /\s\s+/g, ' ' );
@@ -65,8 +66,8 @@ converter.fromFile( CSV_FILENAME, function( err, result ) {
         } );
       } else {
         console.error( "Sorry, you encountered an error. Is this link valid?", 'https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId=' + id );
+        return;
       }
     } );
-
   } );
 } );
