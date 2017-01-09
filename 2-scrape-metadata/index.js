@@ -5,6 +5,7 @@ var converter = new Converter( {} );
 var CSV_FILENAME = "../1-get-eis-ids/eis-listing.csv";
 var Promise = require( 'bluebird' );
 var request = Promise.promisifyAll( require( 'request' ) );
+var batchPromises = require('batch-promises');
 
 var pageData = {
   metaData: {
@@ -31,7 +32,7 @@ converter.fromFile( CSV_FILENAME, function( err, result ) {
   var eisIdArray = result.map( function( obj ) {
     return obj.eis_id;
   } );
-  Promise.map( eisIdArray, function( id ) {
+  batchPromises(2, eisIdArray, function( id ) {
     var url = 'https://cdxnodengn.epa.gov/cdx-enepa-II/public/action/eis/details?eisId=' + id;
     return request.getAsync( url ).then( function( res ) {
       if ( !err && res.statusCode == 200 ) {
